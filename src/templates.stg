@@ -1,0 +1,135 @@
+ifStatement(condition, stats)::= <<
+if <condition>:
+    <stats; separator="\n">
+>>
+
+loopStatement(condition, stats)::= <<
+while <condition>:
+    <stats; separator="\n">
+>>
+
+forStatement(id, value1, value2, stats)::= <<
+for <id> in range(<value1>, <value2>):
+    <stats; separator="\n">
+>>
+
+penDefinition(penName, attributes, applyInstructions, strInstructions) ::= <<
+class <penName>:
+    def __init__(self):
+        <attributes; separator="\n">
+
+    def apply(self, t):
+        <applyInstructions; separator="\n">
+
+    def __str__(self):
+        return ', '.join([<strInstructions; separator=", ">])
+>>
+
+penAttribute(attributeName, attributeValue) ::= <<
+self.<attributeName> = <attributeValue>
+>>
+
+penCreation(penName, penNameTurtle, penDefinition) ::= <<
+<penName> = turtle.Turtle()
+<penNameTurtle> = <penDefinition>
+<penNameTurtle>.apply(<penName>)
+>>
+
+penvertical(penName, direction, pause) ::= <<
+<penName>.<direction>()
+>>
+
+penMovement(penName, direction, value, pause) ::= <<
+<penName>.<direction>(<value>)
+>>
+
+penRotate(penName, direction, value, pause) ::= <<
+<penName>.<direction>(<value>)
+>>
+
+penAction(penName, commands)::= <<
+<commands; separator="\n">
+>>
+
+assignmentExpression(id, value)::= <<
+<id> = <value>
+>>
+
+attributionExpression(value, typeConversion)::= <<
+<value; separator=", "><typeConversion; separator=", ">
+>>
+
+typeConversion(type, value)::= <<
+<type>(<value>)
+>>
+
+type(typeName)::= <<
+<typeName>
+>>
+
+inputStatement(prompt)::= <<
+input(<prompt>)
+>>
+
+valueID(id)::= <<
+<id>
+>>
+
+valuePonto(value1, value2) ::= <<
+(<value1>, <value2>)
+>>
+
+valueExprAritmetica(value1, value2, operator) ::= <<
+<value1> <operator> <value2>
+>>
+
+pauseStatement(value)::= <<
+time.sleep(<value>)
+>>
+
+writeStatement(value)::= <<
+print(<value>)
+>>
+
+variableAssignment(assignments)::= <<
+<assignments; separator=", ">
+>>
+
+defineCanvas(id, string, width, height)::= <<
+<id> = turtle.Screen()
+<id>.title(<string>)
+if <width> is not None and <height> is not None:
+    <id>.screensize(canvwidth=<width>, canvheight=<height>)
+>>
+
+executeProgram(penName, fileName) ::= <<
+visitor0 = ipdrawGrammar()
+visitor0.penName = <penName>
+lexer = ipdrawGrammarLexer(fileName)
+stream = CommonTokenStream(lexer)
+parser = ipdrawGrammarParser(stream)
+tree = parser.program()
+if parser.getNumberOfSyntaxErrors() == 0:
+    visitor0.visit(tree)
+>>
+
+main(penDefinitions, variableAssignment, instructions)::= <<
+import turtle
+import time
+
+<variableAssignment; separator="\n">
+
+<penDefinitions; separator="\n">
+
+def main():
+
+    turtle.screensize(canvwidth=500, canvheight=500)
+
+    <instructions; separator="\n">
+
+    turtle.done()
+
+if __name__ == '__main__':
+    main()
+
+>>
